@@ -17,6 +17,17 @@ public class PLayerMovement : MonoBehaviour
     void Update()
     {
         Run();
+        FlipSprite();
+    }
+
+    private void FlipSprite()
+    {
+        bool IsPlayerHasHorizontalSpeed = Mathf.Abs(Myrigidbody.velocity.x) > Mathf.Epsilon; // so sánh xem nhân vật có đang di chuyển hay không`
+
+        if (IsPlayerHasHorizontalSpeed)
+        {
+            transform.localScale = new Vector2 (Mathf.Sign(Myrigidbody.velocity.x),1f);
+        }
     }
 
     private void Run()
