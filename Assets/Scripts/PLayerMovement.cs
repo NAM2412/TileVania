@@ -7,6 +7,8 @@ public class PLayerMovement : MonoBehaviour
 {
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
+
+    CapsuleCollider2D myCapsuleCollider;
     Vector2 moveInput;
     Rigidbody2D myRigidbody;
     
@@ -15,6 +17,7 @@ public class PLayerMovement : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
     }
 
 
@@ -45,11 +48,14 @@ public class PLayerMovement : MonoBehaviour
 
     private void OnJump (InputValue value) 
     {
-           if (value.isPressed)
-           {
-                // do stuff
-                myRigidbody.velocity = new Vector2(0f,jumpSpeed);
-           }
+        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; } // Kiểm tra xem Umi có chạm đất hay không?
+        if (value.isPressed) // nếu chạm thì thực hiện nhảy
+        {
+            // do stuff
+            myRigidbody.velocity = new Vector2(0f,jumpSpeed);
+                
+        }
+        
     }
     private void OnMove(InputValue value)
     {
