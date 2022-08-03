@@ -8,6 +8,8 @@ public class PLayerMovement : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 10f;
+    float currentGravity;
+    float onLadderGravity=0;
 
     CapsuleCollider2D myCapsuleCollider;
     Vector2 moveInput;
@@ -19,6 +21,7 @@ public class PLayerMovement : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myCapsuleCollider = GetComponent<CapsuleCollider2D>();
+        currentGravity = myRigidbody.gravityScale;
     }
 
 
@@ -67,10 +70,17 @@ public class PLayerMovement : MonoBehaviour
 
     private void ClimbLadder()
     {
-        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) { return; } // Kiểm tra xem Umi có chạm thang hay không?
-
-        Vector2 ClimbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y*climbSpeed);
-        myRigidbody.velocity = ClimbVelocity;
+        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) // Kiểm tra xem Umi có chạm thang hay không?
+        {
+            myRigidbody.gravityScale = currentGravity; // set GravityScale khi ở dưới mặt đất
+            return;
+        } 
+        else
+        {
+            Vector2 ClimbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y*climbSpeed);
+            myRigidbody.velocity = ClimbVelocity;
+            myRigidbody.gravityScale = onLadderGravity;
+        }
 
     }
 }
