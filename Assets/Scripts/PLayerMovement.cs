@@ -72,14 +72,18 @@ public class PLayerMovement : MonoBehaviour
     {
         if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) // Kiểm tra xem Umi có chạm thang hay không?
         {
+            myAnimator.SetBool("IsClimbing",false);
             myRigidbody.gravityScale = currentGravity; // set GravityScale khi ở dưới mặt đất
             return;
         } 
         else
         {
+
             Vector2 ClimbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y*climbSpeed);
             myRigidbody.velocity = ClimbVelocity;
             myRigidbody.gravityScale = onLadderGravity;
+            bool IsPlayerHasVerticalSpeed = Mathf.Abs(myRigidbody.velocity.y) > Mathf.Epsilon; //xem nhân vật có đang ở trên thang hay không`?
+            myAnimator.SetBool("IsClimbing",IsPlayerHasVerticalSpeed);
         }
 
     }
