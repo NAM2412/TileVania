@@ -7,6 +7,7 @@ public class PLayerMovement : MonoBehaviour
 {
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
+    [SerializeField] float climbSpeed = 10f;
 
     CapsuleCollider2D myCapsuleCollider;
     Vector2 moveInput;
@@ -25,6 +26,7 @@ public class PLayerMovement : MonoBehaviour
     {
         Run();
         FlipSprite();
+        ClimbLadder();
     }
 
     private void FlipSprite()
@@ -61,5 +63,14 @@ public class PLayerMovement : MonoBehaviour
     {
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
+    }
+
+    private void ClimbLadder()
+    {
+        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) { return; } // Kiểm tra xem Umi có chạm thang hay không?
+
+        Vector2 ClimbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y*climbSpeed);
+        myRigidbody.velocity = ClimbVelocity;
+
     }
 }
