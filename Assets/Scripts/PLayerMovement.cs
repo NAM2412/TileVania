@@ -11,7 +11,8 @@ public class PLayerMovement : MonoBehaviour
     float currentGravity;
     float onLadderGravity=0;
 
-    CapsuleCollider2D myCapsuleCollider;
+    CapsuleCollider2D myBodyCollider;
+    BoxCollider2D myFeetCollider;
     Vector2 moveInput;
     Rigidbody2D myRigidbody;
     
@@ -20,7 +21,8 @@ public class PLayerMovement : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
+        myBodyCollider = GetComponent<CapsuleCollider2D>();
+        myFeetCollider = GetComponent<BoxCollider2D>();
         currentGravity = myRigidbody.gravityScale;
     }
 
@@ -53,13 +55,12 @@ public class PLayerMovement : MonoBehaviour
 
     private void OnJump (InputValue value) 
     {
-        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; } // Kiểm tra xem Umi có chạm đất hay không?
+        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; } // Nếu chân Umi đang không ở trên mặt đất thì ko thực hiện nhảy
         if (value.isPressed) // nếu chạm thì thực hiện nhảy
         {
-            // do stuff
-            myRigidbody.velocity = new Vector2(0f,jumpSpeed);
-                
+            myRigidbody.velocity = new Vector2(0f,jumpSpeed);              
         }
+
         
     }
     private void OnMove(InputValue value)
@@ -70,7 +71,7 @@ public class PLayerMovement : MonoBehaviour
 
     private void ClimbLadder()
     {
-        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) // Kiểm tra xem Umi có chạm thang hay không?
+        if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) // Nếu Umi không chạm thang
         {
             myAnimator.SetBool("IsClimbing",false);
             myRigidbody.gravityScale = currentGravity; // set GravityScale khi ở dưới mặt đất
