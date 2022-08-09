@@ -43,7 +43,7 @@ public class PLayerMovement : MonoBehaviour
 
     private void Die()
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy", "Hazards")))
         {
             GetComponent<AudioSource>().PlayOneShot(DyingSFX);
             isAlive = false;

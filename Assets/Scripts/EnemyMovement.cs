@@ -18,7 +18,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        Erigibody.velocity = new Vector2(EmoveSpeed,Erigibody.velocity.y);
+        Erigibody.velocity = new Vector2(EmoveSpeed,0f);
     }
     private void OnTriggerExit2D(Collider2D other) 
     {
