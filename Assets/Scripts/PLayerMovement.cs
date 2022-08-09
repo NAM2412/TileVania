@@ -9,7 +9,9 @@ public class PLayerMovement : MonoBehaviour
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 10f;
     [SerializeField] Vector2 deathKick = new Vector2(20f,20f);
-   [SerializeField]  AudioClip DyingSFX;
+    [SerializeField]  AudioClip DyingSFX;
+    [SerializeField] GameObject bullet;
+    [SerializeField] Transform gun;
     float currentGravity;
     float onLadderGravity=0;
     bool isAlive = true;
@@ -18,7 +20,6 @@ public class PLayerMovement : MonoBehaviour
     BoxCollider2D myFeetCollider;
     Vector2 moveInput;
     Rigidbody2D myRigidbody;
-    
     Animator myAnimator;
     void Start()
     {
@@ -33,7 +34,6 @@ public class PLayerMovement : MonoBehaviour
     void Update()
     {
         if (!isAlive) {return;}
-        
         Run();
         FlipSprite();
         ClimbLadder();
@@ -89,7 +89,14 @@ public class PLayerMovement : MonoBehaviour
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
-
+    private void OnFire (InputValue value) 
+    {
+        if(!isAlive) {return;}
+        if (value.isPressed) // nếu chạm thì thực hiện nhảy
+        {
+              Instantiate(bullet, gun.position,transform.rotation);
+        }
+    }
     private void ClimbLadder()
     {
         if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Climbing"))) // Nếu Umi không chạm thang
