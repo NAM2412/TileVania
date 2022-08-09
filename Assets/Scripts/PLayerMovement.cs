@@ -8,8 +8,11 @@ public class PLayerMovement : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 10f;
+    [SerializeField] Vector2 deathKick = new Vector2(20f,20f);
+   [SerializeField]  AudioClip DyingSFX;
     float currentGravity;
     float onLadderGravity=0;
+    bool isAlive = true;
 
     CapsuleCollider2D myBodyCollider;
     BoxCollider2D myFeetCollider;
@@ -29,9 +32,26 @@ public class PLayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (!isAlive) {return;}
+        
         Run();
         FlipSprite();
         ClimbLadder();
+        Die();
+        
+    }
+
+    private void Die()
+    {
+        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            GetComponent<AudioSource>().PlayOneShot(DyingSFX);
+            isAlive = false;
+            myAnimator.SetTrigger("Dying");
+            myRigidbody.velocity = deathKick;
+           
+        }
+        
     }
 
     private void FlipSprite()
@@ -55,16 +75,17 @@ public class PLayerMovement : MonoBehaviour
 
     private void OnJump (InputValue value) 
     {
+        if (!isAlive) {return;}
         if (!myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; } // Nếu chân Umi đang không ở trên mặt đất thì ko thực hiện nhảy
         if (value.isPressed) // nếu chạm thì thực hiện nhảy
         {
             myRigidbody.velocity = new Vector2(0f,jumpSpeed);              
         }
-
-        
+              
     }
     private void OnMove(InputValue value)
     {
+        if (!isAlive) {return;}
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
