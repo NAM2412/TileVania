@@ -10,9 +10,12 @@ public class LevelExit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        finishEffect.Play();
-        GetComponent<AudioSource>().PlayOneShot(finishLevelSound);
-        StartCoroutine(LoadNextLevel());
+        if (other.tag == "Player")
+        {
+            finishEffect.Play();
+            GetComponent<AudioSource>().PlayOneShot(finishLevelSound);
+            StartCoroutine(LoadNextLevel());
+        }
     }
     IEnumerator LoadNextLevel()
     {
