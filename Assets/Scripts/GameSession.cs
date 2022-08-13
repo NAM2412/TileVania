@@ -12,7 +12,6 @@ public class GameSession : MonoBehaviour
     [SerializeField] TextMeshProUGUI livesText;
     [SerializeField] TextMeshProUGUI scoreText;
 
-    CoinPickup coinPickup = new CoinPickup();
     void Awake()
     {
         int numberOfGameSession = FindObjectsOfType<GameSession>().Length;
@@ -39,6 +38,7 @@ public class GameSession : MonoBehaviour
         else
         {
             ResetGameSession();
+            
         }
     }
 
@@ -57,6 +57,7 @@ public class GameSession : MonoBehaviour
 
     private void ResetGameSession()
     {
+        FindObjectOfType<ScenePersist>().ResetScenePersist();
         SceneManager.LoadScene(0); //First scene index = 0;
         Destroy(gameObject);
     }
