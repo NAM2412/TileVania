@@ -22,7 +22,7 @@ TagManager:
   - Enemy
   - Hazards
   - Bullet
-  - Exit Door
+  - Interactables
   - 
   - 
   - 
@@ -59,7 +59,7 @@ TagManager:
   - name: Hazards
     uniqueID: 791683399
     locked: 0
-  - name: Exit
+  - name: Interactables
     uniqueID: 3492432999
     locked: 0
   - name: Enemy
